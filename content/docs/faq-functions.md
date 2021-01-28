@@ -83,7 +83,7 @@ class Foo extends Component {
 
 >**Note:**
 >
->Using an arrow function in render creates a new function each time the component renders, which may have performance implications (see below).
+>Using an arrow function in render creates a new function each time the component renders, which may break optimizations based on strict identity comparison.
 
 ### Is it OK to use arrow functions in render methods? {#is-it-ok-to-use-arrow-functions-in-render-methods}
 
@@ -152,7 +152,6 @@ const A = 65 // ASCII character code
 class Alphabet extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
     this.state = {
       justClicked: null,
       letters: Array.from({length: 26}, (_, i) => String.fromCharCode(A + i))
@@ -290,9 +289,6 @@ class Searchbox extends React.Component {
   }
 
   handleChange(e) {
-    // React pools events, so we read the value before debounce.
-    // Alternately we could call `event.persist()` and pass the entire event.
-    // For more info see reactjs.org/docs/events.html#event-pooling
     this.emitChangeDebounced(e.target.value);
   }
 
